@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صالة جنات للأفراح والمناسبات | Heavens Hall System</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Tajawal -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                    },
+                    colors: {
+                        ice: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                            900: '#0a3651',
+                        },
+                        navy: {
+                            800: '#0f223d',
+                            900: '#0a172c',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f4f9fd;
+        }
+        
+        /* Custom Scrollbars for smooth mobile feeling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e0f2fe;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0284c7;
+            border-radius: 4px;
+        }
+
+        /* Printable Voucher Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printableVoucher, #printableVoucher * {
+                visibility: visible;
+            }
+            #printableVoucher {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white;
+                color: black;
+                padding: 20px;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 bg-ice-50 min-h-screen flex flex-col justify-between pb-20 md:pb-0">
+
+    <!-- Top Main Navigation Bar -->
+    <header class="bg-gradient-to-r from-navy-900 via-ice-900 to-navy-900 text-white shadow-lg sticky top-0 z-40 border-b border-ice-300/20">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-gold-400 to-ice-400 flex items-center justify-center text-navy-900 font-extrabold text-2xl shadow-inner border border-white/40">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg md:text-xl tracking-tight text-white flex items-center gap-2">
+                        صالة جنات للأفراح والمناسبات
+                        <span class="text-xs font-normal text-gold-400 bg-navy-800/80 px-2 py-0.5 rounded-full border border-gold-500/30">Heavens Hall</span>
+                    </h1>
+                    <p class="text-xs text-ice-200">نظام الإدارة الذكية والحجوزات الفاخرة</p>
+                </div>
+            </div>
+
+            <!-- Header Quick Actions -->
+            <div class="flex items-center gap-2">
+                <button onclick="toggleViewMode()" id="viewToggleBtn" class="bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-600 hover:to-amber-700 text-navy-900 font-bold px-3 py-1.5 rounded-xl text-xs md:text-sm flex items-center gap-1.5 shadow transition transform active:scale-95">
+                    <i class="fa-solid fa-eye"></i>
+                    <span id="viewToggleText">عرض للزوار</span>
+                </button>
+                <button onclick="openBackupModal()" class="bg-ice-800/80 hover:bg-ice-700 text-ice-100 p-2 rounded-xl text-sm transition" title="النسخ الاحتياطي والبيانات">
+                    <i class="fa-solid fa-database"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Desktop Navigation Tabs -->
+        <nav class="hidden md:flex justify-center border-t border-white/10 bg-black/20 text-sm font-medium">
+            <button onclick="switchTab('dashboard')" class="tab-btn px-5 py-2.5 hover:text-gold-400 transition flex items-center gap-2 border-b-2 border-transparent" id="tab-dashboard">
+                <i class="fa-solid fa-chart-pie text-ice-300"></i> لوحة التحكم
+            </button>
+            <button onclick="switchTab('schedule')" class="tab-btn px-5 py-2.5 hover:text-gold-400 transition flex items-center gap-2 border-b-2 border-transparent" id="tab-schedule">
+                <i class="fa-solid fa-calendar-days text-ice-300"></i> جدول الحجوزات
+            </button>
+            <button onclick="switchTab('bookings')" class="tab-btn px-5 py-2.5 hover:text-gold-400 transition flex items-center gap-2 border-b-2 border-transparent" id="tab-bookings">
+                <i class="fa-solid fa-book-bookmark text-ice-300"></i> إيجاز الحجوزات والسندات
+            </button>
+            <button onclick="switchTab('financials')" class="tab-btn px-5 py-2.5 hover:text-gold-400 transition flex items-center gap-2 border-b-2 border-transparent" id="tab-financials">
+                <i class="fa-solid fa-file-invoice-dollar text-ice-300"></i> المالية والتحصيل
+            </button>
+            <button onclick="switchTab('halls')" class="tab-btn px-5 py-2.5 hover:text-gold-400 transition flex items-center gap-2 border-b-2 border-transparent" id="tab-halls">
+                <i class="fa-solid fa-archway text-ice-300"></i> إدارة الصالات
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 w-full flex-grow">
+
+        <!-- ADMIN PANELS CONTAINER -->
+        <div id="adminContainer">
+            
+            <!-- SECTION 1: DASHBOARD -->
+            <section id="sec-dashboard" class="space-y-6">
+                <!-- Stat Cards Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-ice-200 relative overflow-hidden group">
+                        <div class="absolute -left-3 -bottom-3 w-16 h-16 bg-ice-100 rounded-full group-hover:scale-110 transition"></div>
+                        <div class="flex items-center justify-between relative z-10">
+                            <div>
+                                <p class="text-xs font-bold text-slate-500">إجمالي الحجوزات</p>
+                                <h3 class="text-2xl font-black text-navy-800 mt-1" id="dashTotalBookings">0</h3>
+                            </div>
+                            <div class="w-10 h-10 rounded-xl bg-ice-500 text-white flex items-center justify-center text-lg shadow-md shadow-ice-200">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-ice-200 relative overflow-hidden group">
+                        <div class="absolute -left-3 -bottom-3 w-16 h-16 bg-emerald-50 rounded-full group-hover:scale-110 transition"></div>
+                        <div class="flex items-center justify-between relative z-10">
+                            <div>
+                                <p class="text-xs font-bold text-slate-500">المبالغ المحصلة</p>
+                                <h3 class="text-xl md:text-2xl font-black text-emerald-600 mt-1" id="dashCollectedAmount">0 <span class="text-xs">د.إ</span></h3>
+                            </div>
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow-md shadow-emerald-200">
+                                <i class="fa-solid fa-vault"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-ice-200 relative overflow-hidden group">
+                        <div class="absolute -left-3 -bottom-3 w-16 h-16 bg-amber-50 rounded-full group-hover:scale-110 transition"></div>
+                        <div class="flex items-center justify-between relative z-10">
+                            <div>
+                                <p class="text-xs font-bold text-slate-500">المتبقي الآجل</p>
+                                <h3 class="text-xl md:text-2xl font-black text-amber-600 mt-1" id="dashRemainingAmount">0 <span class="text-xs">د.إ</span></h3>
+                            </div>
+                            <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg shadow-md shadow-amber-200">
+                                <i class="fa-solid fa-hand-holding-dollar"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-ice-200 relative overflow-hidden group">
+                        <div class="absolute -left-3 -bottom-3 w-16 h-16 bg-purple-50 rounded-full group-hover:scale-110 transition"></div>
+                        <div class="flex items-center justify-between relative z-10">
+                            <div>
+                                <p class="text-xs font-bold text-slate-500">الصالات المتاحة</p>
+                                <h3 class="text-2xl font-black text-purple-700 mt-1" id="dashActiveHalls">0</h3>
+                            </div>
+                            <div class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center text-lg shadow-md shadow-purple-200">
+                                <i class="fa-solid fa-building-circle-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Action Bar -->
+                <div class="flex flex-wrap gap-3 items-center justify-between bg-gradient-to-r from-ice-600 to-navy-800 p-4 rounded-2xl text-white shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-white/10 rounded-xl">
+                            <i class="fa-solid fa-wand-magic-sparkles text-gold-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-base">إدارة حجز جديد بشكل سريع</h4>
+                            <p class="text-xs text-ice-100">سجل بيانات المناسبة، اختر الصالة، وقم بإصدار سند الدفع مباشرة</p>
+                        </div>
+                    </div>
+                    <button onclick="openBookingModal()" class="bg-gold-500 hover:bg-gold-600 text-navy-900 font-black px-5 py-2.5 rounded-xl text-sm shadow transition transform active:scale-95 flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> إضافة حجز جديد
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Recent Bookings Overview -->
+                    <div class="lg:col-span-2 bg-white p-5 rounded-2xl shadow-sm border border-ice-200">
+                        <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+                            <h3 class="font-bold text-navy-900 flex items-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left text-ice-500"></i> أحدث الحجوزات المسجلة
+                            </h3>
+                            <button onclick="switchTab('bookings')" class="text-xs font-bold text-ice-600 hover:underline">عرض الكل ←</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-right text-xs md:text-sm">
+                                <thead>
+                                    <tr class="bg-ice-50 text-slate-600 border-b border-ice-100">
+                                        <th class="p-2.5">العميل</th>
+                                        <th class="p-2.5">الصالة</th>
+                                        <th class="p-2.5">التاريخ والوقت</th>
+                                        <th class="p-2.5">الحالة</th>
+                                        <th class="p-2.5 text-center">السند</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashRecentBookingsBody" class="divide-y divide-slate-100">
+                                    <!-- Dynamic rows loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Hall Readiness Cards Summary -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-ice-200">
+                        <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+                            <h3 class="font-bold text-navy-900 flex items-center gap-2">
+                                <i class="fa-solid fa-synagogue text-gold-500"></i> حالة الصالات الحالية
+                            </h3>
+                            <button onclick="switchTab('halls')" class="text-xs font-bold text-ice-600 hover:underline">إدارة الصالات ←</button>
+                        </div>
+                        <div id="dashHallsList" class="space-y-3">
+                            <!-- Dynamic Halls Status Cards -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: SCHEDULE & CALENDAR GRID -->
+            <section id="sec-schedule" class="space-y-5 hidden">
+                <div class="bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-ice-200 flex flex-wrap gap-4 items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-bold text-navy-900 flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-day text-ice-600"></i> جدول الحجوزات الشامل
+                        </h2>
+                        <p class="text-xs text-slate-500">استعرض توقيت الأيام والساعات لكل صالة تفاعلياً</p>
+                    </div>
+                    
+                    <!-- Filters -->
+                    <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                        <select id="scheduleHallFilter" onchange="renderScheduleTable()" class="bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-xs md:text-sm font-medium focus:ring-2 focus:ring-ice-500 outline-none">
+                            <option value="all">كل الصالات</option>
+                        </select>
+                        <input type="date" id="scheduleDateFilter" onchange="renderScheduleTable()" class="bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-xs md:text-sm font-medium focus:ring-2 focus:ring-ice-500 outline-none">
+                        <button onclick="resetScheduleFilters()" class="bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl text-xs font-bold text-slate-600 transition">
+                            <i class="fa-solid fa-arrows-rotate"></i> إعادة ضبط
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Schedule Grid Container -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-ice-200 overflow-x-auto">
+                    <div id="scheduleGrid" class="min-w-[700px]">
+                        <!-- Dynamic schedule content loaded via JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: BOOKINGS MANAGEMENT -->
+            <section id="sec-bookings" class="space-y-5 hidden">
+                <div class="bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-ice-200 flex flex-wrap gap-4 items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-bold text-navy-900 flex items-center gap-2">
+                            <i class="fa-solid fa-receipt text-ice-600"></i> سجل الحجوزات وإصدار السندات
+                        </h2>
+                        <p class="text-xs text-slate-500">تتبع الطلبات، تحكم بالحالات، واطبع إيصالات الاستلام</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="bookingSearchInput" onkeyup="renderBookingsTable()" placeholder="بحث باسم العميل أو الهاتف..." class="bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-xs md:text-sm w-48 md:w-64 focus:ring-2 focus:ring-ice-400 outline-none">
+                        <button onclick="openBookingModal()" class="bg-ice-600 hover:bg-ice-700 text-white px-4 py-2 rounded-xl text-xs md:text-sm font-bold shadow flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-plus"></i> حجز جديد
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bookings Main Table -->
+                <div class="bg-white rounded-2xl shadow-sm border border-ice-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right text-xs md:text-sm">
+                            <thead class="bg-navy-900 text-white">
+                                <tr>
+                                    <th class="p-3">رقم الحجز</th>
+                                    <th class="p-3">اسم العميل</th>
+                                    <th class="p-3">الهاتف</th>
+                                    <th class="p-3">الصالة المختارة</th>
+                                    <th class="p-3">التاريخ والوقت</th>
+                                    <th class="p-3">المبلغ / المدفوع</th>
+                                    <th class="p-3">الحالة</th>
+                                    <th class="p-3 text-center">إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookingsTableBody" class="divide-y divide-slate-100">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: PAYMENTS & FINANCIALS -->
+            <section id="sec-financials" class="space-y-5 hidden">
+                <div class="bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-ice-200">
+                    <h2 class="text-lg font-bold text-navy-900 flex items-center gap-2">
+                        <i class="fa-solid fa-coins text-gold-500"></i> إدارة المقبوضات والسداد المالي
+                    </h2>
+                    <p class="text-xs text-slate-500">متابعة الدفعات والعرابين والمبالغ المتبقية على العملاء</p>
+                </div>
+
+                <!-- Financial Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-gradient-to-br from-emerald-500 to-teal-700 text-white p-4 rounded-2xl shadow">
+                        <p class="text-xs font-semibold opacity-90">مجموع المقبوضات النقدية والعرابين</p>
+                        <h3 class="text-2xl font-black mt-1" id="finCollectedTotal">0 د.إ</h3>
+                    </div>
+                    <div class="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-4 rounded-2xl shadow">
+                        <p class="text-xs font-semibold opacity-90">إجمالي المبالغ القائمة (المتبقية)</p>
+                        <h3 class="text-2xl font-black mt-1" id="finPendingTotal">0 د.إ</h3>
+                    </div>
+                    <div class="bg-gradient-to-br from-ice-600 to-navy-800 text-white p-4 rounded-2xl shadow">
+                        <p class="text-xs font-semibold opacity-90">القيمة الإجمالية للعقود</p>
+                        <h3 class="text-2xl font-black mt-1" id="finGrandTotal">0 د.إ</h3>
+                    </div>
+                </div>
+
+                <!-- Unpaid / Partial Payments Alert Box -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-ice-200">
+                    <h3 class="font-bold text-slate-800 text-sm mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> الحجوزات بانتظار استكمال السداد
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right text-xs md:text-sm">
+                            <thead>
+                                <tr class="bg-amber-50 text-amber-900 border-b border-amber-200">
+                                    <th class="p-2.5">رقم الحجز</th>
+                                    <th class="p-2.5">العميل</th>
+                                    <th class="p-2.5">المبلغ الكلي</th>
+                                    <th class="p-2.5">المدفوع</th>
+                                    <th class="p-2.5">المتبقي المطلوب</th>
+                                    <th class="p-2.5 text-center">تسجيل دفعة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="financialPendingBody" class="divide-y divide-slate-100">
+                                <!-- Dynamic Pending Payments -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: HALLS MANAGER -->
+            <section id="sec-halls" class="space-y-5 hidden">
+                <div class="bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-ice-200 flex flex-wrap gap-4 items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-bold text-navy-900 flex items-center gap-2">
+                            <i class="fa-solid fa-hotel text-ice-600"></i> التخصيص وإدارة الصالات
+                        </h2>
+                        <p class="text-xs text-slate-500">إضافة وتعديل صالات المناسبات والتجهيزات والأسعار الخاصة</p>
+                    </div>
+                    <button onclick="openHallModal()" class="bg-navy-800 hover:bg-navy-900 text-white px-4 py-2 rounded-xl text-xs md:text-sm font-bold shadow flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-plus-circle text-gold-400"></i> إضافة صالة جديدة
+                    </button>
+                </div>
+
+                <!-- Dynamic Halls Grid -->
+                <div id="hallsGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Dynamic Hall Cards Rendered Here -->
+                </div>
+            </section>
+        </div>
+
+        <!-- PUBLIC PORTAL CONTAINER (Toggleable View) -->
+        <div id="publicContainer" class="hidden space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative rounded-3xl overflow-hidden shadow-xl bg-gradient-to-r from-navy-900 via-ice-900 to-navy-800 text-white p-8 md:p-12 text-center">
+                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-15"></div>
+                <div class="relative z-10 max-w-3xl mx-auto space-y-4">
+                    <span class="bg-gold-500/20 text-gold-400 border border-gold-500/40 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">أهلاً بكم في صالة جنات</span>
+                    <h2 class="text-3xl md:text-5xl font-black text-white leading-tight">عالم من الفخامة لتخليد أجمل لحظات العمر</h2>
+                    <p class="text-ice-100 text-sm md:text-base leading-relaxed">اختر الصالة المناسبة لمناسبتك، استعرض التجهيزات المتاحة، وقم بتقديم طلب حجز مبدئي مباشرة</p>
+                    <a href="#publicBookingForm" class="inline-block bg-gradient-to-r from-gold-500 to-amber-500 hover:from-gold-600 hover:to-amber-600 text-navy-900 font-black px-8 py-3 rounded-2xl text-base shadow-lg transition transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-paper-plane ml-2"></i> احجز مناسبتك الآن
+                    </a>
+                </div>
+            </div>
+
+            <!-- Public Halls Showcase Grid -->
+            <div>
+                <h3 class="text-2xl font-black text-navy-900 text-center mb-6 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-sparkles text-gold-500"></i> صالاتنا الفاخرة المتاحة
+                </h3>
+                <div id="publicHallsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Public Pre-Booking Request Form -->
+            <div id="publicBookingForm" class="bg-white p-6 md:p-8 rounded-3xl shadow-lg border border-ice-200 max-w-3xl mx-auto">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold text-navy-900">تقديم طلب حجز مبدئي</h3>
+                    <p class="text-xs text-slate-500 mt-1">سوف يتم التواصل معكم فوراً لتأكيد الحجز وتنسيق العربون</p>
+                </div>
+                <form id="publicForm" onsubmit="handlePublicBooking(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">الاسم الكامل *</label>
+                            <input type="text" id="pubClientName" required placeholder="أدخل اسمك الكريم" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-ice-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">رقم الهاتف *</label>
+                            <input type="tel" id="pubClientPhone" required placeholder="05xxxxxxxx" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-ice-500 outline-none">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">اختيار الصالة *</label>
+                            <select id="pubHallSelect" required class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-ice-500 outline-none">
+                                <!-- Loaded via JS -->
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">نوع المناسبة *</label>
+                            <select id="pubEventType" required class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-ice-500 outline-none">
+                                <option value="زفاف / حفل زواج">حفل زفاف / زواج</option>
+                                <option value="خطوبة / ملكة">حفل خطوبة / ملكة</option>
+                                <option value="تخرج / نجاح">حفل تخرج</option>
+                                <option value="مؤتمر / اجتماعات">مؤتمر / اجتماع شركة</option>
+                                <option value="مناسبة خاصة أخرى">مناسبة خاصة أخرى</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">تاريخ المناسبة *</label>
+                            <input type="date" id="pubDate" required class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-ice-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">وقت البدء *</label>
+                            <input type="time" id="pubTimeFrom" required value="16:00" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-ice-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">وقت النهاية *</label>
+                            <input type="time" id="pubTimeTo" required value="23:00" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-ice-500 outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">ملاحظات وتجهيزات خاصة</label>
+                        <textarea id="pubNotes" rows="2" placeholder="أي تفاصيل أو طلبات إضافية للكوشة والضيافة..." class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-ice-500 outline-none"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-ice-600 to-navy-800 text-white font-bold py-3 rounded-2xl shadow hover:opacity-95 transition">
+                        <i class="fa-solid fa-paper-plane ml-2"></i> إرسال طلب الحجز المبدئي
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-navy-900 text-slate-300 border-t border-ice-300/20 z-40 flex justify-around py-2 text-center text-[10px] font-medium">
+        <button onclick="switchTab('dashboard')" class="mobile-tab-btn flex flex-col items-center gap-1 text-gold-400" id="mtab-dashboard">
+            <i class="fa-solid fa-chart-pie text-base"></i>
+            <span>الرئيسية</span>
+        </button>
+        <button onclick="switchTab('schedule')" class="mobile-tab-btn flex flex-col items-center gap-1" id="mtab-schedule">
+            <i class="fa-solid fa-calendar-days text-base"></i>
+            <span>الجدول</span>
+        </button>
+        <button onclick="switchTab('bookings')" class="mobile-tab-btn flex flex-col items-center gap-1" id="mtab-bookings">
+            <i class="fa-solid fa-book-bookmark text-base"></i>
+            <span>الحجوزات</span>
+        </button>
+        <button onclick="switchTab('financials')" class="mobile-tab-btn flex flex-col items-center gap-1" id="mtab-financials">
+            <i class="fa-solid fa-coins text-base"></i>
+            <span>المالية</span>
+        </button>
+        <button onclick="switchTab('halls')" class="mobile-tab-btn flex flex-col items-center gap-1" id="mtab-halls">
+            <i class="fa-solid fa-archway text-base"></i>
+            <span>الصالات</span>
+        </button>
+    </nav>
+
+    <!-- MODAL 1: ADD / EDIT BOOKING -->
+    <div id="bookingModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden">
+        <div class="bg-white rounded-3xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-5 md:p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-navy-900 text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-plus text-ice-600"></i> <span id="bookingModalTitle">تسجيل حجز جديد</span>
+                </h3>
+                <button onclick="closeModal('bookingModal')" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="bookingForm" onsubmit="saveBooking(event)" class="space-y-4">
+                <input type="hidden" id="bookingEditId">
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">اسم العميل *</label>
+                        <input type="text" id="bookClientName" required class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">رقم الهاتف *</label>
+                        <input type="tel" id="bookClientPhone" required class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">اختيار الصالة *</label>
+                        <select id="bookHallId" required onchange="calcBookingPrice()" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                            <!-- Dynamic options -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">نوع المناسبة *</label>
+                        <select id="bookEventType" required class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                            <option value="حفل زفاف كامل">حفل زفاف كامل</option>
+                            <option value="حفل خطوبة / ملكة">حفل خطوبة / ملكة</option>
+                            <option value="حفل تخرج وتكريم">حفل تخرج وتكريم</option>
+                            <option value="اجتماع / مؤتمر">اجتماع / مؤتمر</option>
+                            <option value="مناسبة خاصة">مناسبة خاصة</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">تاريخ الحجز *</label>
+                        <input type="date" id="bookDate" required class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">من الساعة *</label>
+                        <input type="time" id="bookTimeFrom" required value="17:00" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">إلى الساعة *</label>
+                        <input type="time" id="bookTimeTo" required value="23:00" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                    </div>
+                </div>
+
+                <div class="p-3 bg-ice-100/60 rounded-2xl space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-navy-900 mb-1">المبلغ الإجمالي (د.إ)</label>
+                            <input type="number" id="bookTotalPrice" required min="0" oninput="calcRemaining()" class="w-full bg-white border border-ice-300 rounded-xl px-3 py-2 text-sm font-bold text-navy-900 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-emerald-700 mb-1">العربون المدفوع (د.إ)</label>
+                            <input type="number" id="bookDeposit" required min="0" oninput="calcRemaining()" class="w-full bg-white border border-emerald-300 rounded-xl px-3 py-2 text-sm font-bold text-emerald-700 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-amber-700 mb-1">المتبقي المطلوب</label>
+                            <input type="number" id="bookRemaining" readonly class="w-full bg-slate-100 border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold text-amber-700 outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">حالة الحجز *</label>
+                        <select id="bookStatus" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                            <option value="مؤكد">مؤكد (تم استلام العربون)</option>
+                            <option value="بانتظار العربون">بانتظار العربون</option>
+                            <option value="مكتمل">مكتمل (منتهي ومسدد)</option>
+                            <option value="ملغي">ملغي</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">ملاحظات وتجهيزات</label>
+                        <input type="text" id="bookNotes" placeholder="كوشة، إضاءة، ضيافة..." class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeModal('bookingModal')" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 bg-slate-100 hover:bg-slate-200">إلغاء</button>
+                    <button type="submit" class="px-6 py-2 rounded-xl text-xs font-bold text-white bg-ice-600 hover:bg-ice-700 shadow">حفظ الحجز</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: ADD PAYMENT -->
+    <div id="paymentModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-5 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-navy-900 text-base flex items-center gap-2">
+                    <i class="fa-solid fa-money-bill-wave text-emerald-600"></i> إضافة دفعة مالية جديدة
+                </h3>
+                <button onclick="closeModal('paymentModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="paymentForm" onsubmit="savePayment(event)" class="space-y-3">
+                <input type="hidden" id="payBookingId">
+                
+                <div class="bg-ice-50 p-3 rounded-xl space-y-1 text-xs">
+                    <p><span class="text-slate-500">العميل:</span> <strong id="payClientName" class="text-navy-900">--</strong></p>
+                    <p><span class="text-slate-500">المبلغ المتبقي الحالي:</span> <strong id="payCurrentRemaining" class="text-amber-600">0 د.إ</strong></p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">المبلغ المدفوع الآن (د.إ) *</label>
+                    <input type="number" id="payAmount" required min="1" class="w-full bg-white border border-emerald-300 rounded-xl px-3 py-2 text-sm font-bold text-emerald-700 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">طريقة الدفع *</label>
+                    <select id="payMethod" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                        <option value="نقداً (Cash)">نقداً (Cash)</option>
+                        <option value="بطاقة ائتمان / مدى">بطاقة ائتمان / مدى</option>
+                        <option value="تحويل بنكي">تحويل بنكي</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+                    <button type="button" onclick="closeModal('paymentModal')" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 bg-slate-100">إلغاء</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow">تأكيد تحصيل الدفعة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 3: ADD / EDIT HALL -->
+    <div id="hallModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-5 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-navy-900 text-base flex items-center gap-2">
+                    <i class="fa-solid fa-archway text-ice-600"></i> <span id="hallModalTitle">إضافة صالة جديدة</span>
+                </h3>
+                <button onclick="closeModal('hallModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="hallForm" onsubmit="saveHall(event)" class="space-y-3">
+                <input type="hidden" id="hallEditId">
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">اسم الصالة *</label>
+                    <input type="text" id="hallName" required placeholder="مثال: الصالة الأولى - النعيم" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">السعة (أشخاص) *</label>
+                        <input type="number" id="hallCapacity" required placeholder="300" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">السعر التقريبي للحجز *</label>
+                        <input type="number" id="hallPrice" required placeholder="5000" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">التجهيزات والمميزات (مفصولة بفواصل)</label>
+                    <input type="text" id="hallFeatures" placeholder="إضاءة ليزر، مسرح مكبرات، ضيافة، كوشة فاخرة" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">حالة الصالة</label>
+                    <select id="hallStatus" class="w-full bg-ice-50 border border-ice-200 rounded-xl px-3 py-2 text-sm outline-none">
+                        <option value="متاحة">متاحة للحجز</option>
+                        <option value="صيانة">قيد الصيانة / غير متاحة</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+                    <button type="button" onclick="closeModal('hallModal')" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 bg-slate-100">إلغاء</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-white bg-navy-800 hover:bg-navy-900 shadow">حفظ الصالة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 4: VOUCHER / RECEIPT PRINT PREVIEW -->
+    <div id="voucherModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[95vh] overflow-y-auto p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 no-print">
+                <h3 class="font-bold text-navy-900 text-base flex items-center gap-2">
+                    <i class="fa-solid fa-print text-gold-500"></i> معاينة سند الاستلام الرسمي
+                </h3>
+                <button onclick="closeModal('voucherModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Printable Voucher Body -->
+            <div id="printableVoucher" class="bg-white p-6 border-2 border-navy-900/10 rounded-2xl space-y-6">
+                <!-- Header -->
+                <div class="flex justify-between items-center border-b-2 border-gold-500 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-navy-900">صالة جنات للأفراح والمناسبات</h2>
+                        <p class="text-xs text-slate-500">Heavens Hall - سند استلام رسمي وتأكيد حجز</p>
+                    </div>
+                    <div class="text-left text-xs text-slate-600">
+                        <p>رقم السند: <strong id="vNum" class="text-navy-900">#000</strong></p>
+                        <p>تاريخ الاصدار: <strong id="vIssueDate">--</strong></p>
+                    </div>
+                </div>
+
+                <!-- Client Details Grid -->
+                <div class="grid grid-cols-2 gap-4 text-xs bg-ice-50 p-4 rounded-xl border border-ice-100">
+                    <div>
+                        <p class="text-slate-500">استلمنا من السيد/السيدة:</p>
+                        <p id="vClientName" class="font-bold text-sm text-navy-900 mt-0.5">--</p>
+                    </div>
+                    <div>
+                        <p class="text-slate-500">رقم التواصل:</p>
+                        <p id="vClientPhone" class="font-bold text-sm text-slate-800 mt-0.5">--</p>
+                    </div>
+                    <div>
+                        <p class="text-slate-500">الصالة المحجوزة:</p>
+                        <p id="vHallName" class="font-bold text-sm text-ice-700 mt-0.5">--</p>
+                    </div>
+                    <div>
+                        <p class="text-slate-500">تاريخ المناسبة والتوقيت:</p>
+                        <p id="vEventDate" class="font-bold text-sm text-slate-800 mt-0.5">--</p>
+                    </div>
+                </div>
+
+                <!-- Payment Breakdown Table -->
+                <table class="w-full text-right text-xs border border-slate-200">
+                    <thead class="bg-navy-900 text-white">
+                        <tr>
+                            <th class="p-2 border">البيان</th>
+                            <th class="p-2 border text-center">المبلغ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-2 border font-medium">إجمالي قيمة العقد المعتمدة</td>
+                            <td id="vTotal" class="p-2 border text-center font-bold">0 د.إ</td>
+                        </tr>
+                        <tr class="bg-emerald-50">
+                            <td class="p-2 border font-medium text-emerald-800">إجمالي المبالغ المدفوعة (العربون والدفعات)</td>
+                            <td id="vPaid" class="p-2 border text-center font-bold text-emerald-700">0 د.إ</td>
+                        </tr>
+                        <tr class="bg-amber-50">
+                            <td class="p-2 border font-medium text-amber-900">المبلغ المتبقي واجب السداد قبل المناسبة</td>
+                            <td id="vRemaining" class="p-2 border text-center font-bold text-amber-700">0 د.إ</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Terms & Signatures -->
+                <div class="pt-4 border-t border-slate-200 grid grid-cols-2 gap-6 text-xs text-slate-500">
+                    <div>
+                        <p class="font-bold text-slate-700 mb-1">الشروط والأحكام:</p>
+                        <ul class="list-disc list-inside space-y-0.5 text-[10px]">
+                            <li>تعتبر الحجوزات مؤكدة فور استلام العربون.</li>
+                            <li>يلزم تسديد المبلغ المتبقي كاملاً قبل تاريخ المناسبة بـ 3 أيام.</li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-col justify-end text-center space-y-8">
+                        <p class="font-bold text-navy-900">توقيع وختم الإدارة</p>
+                        <p class="text-slate-400">صالة جنات للأفراح والمناسبات</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Print Buttons -->
+            <div class="flex justify-end gap-2 pt-2 no-print">
+                <button onclick="closeModal('voucherModal')" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 bg-slate-100">إغلاق</button>
+                <button onclick="window.print()" class="px-6 py-2 rounded-xl text-xs font-bold text-navy-900 bg-gold-400 hover:bg-gold-500 shadow flex items-center gap-1.5">
+                    <i class="fa-solid fa-print"></i> طباعة السند الآن
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: BACKUP & DATA MANAGEMENT -->
+    <div id="backupModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-5 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-navy-900 text-base flex items-center gap-2">
+                    <i class="fa-solid fa-database text-ice-600"></i> إدارة البيانات والنسخ الاحتياطي
+                </h3>
+                <button onclick="closeModal('backupModal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <p class="text-slate-600">يمكنك تصدير كافة الحجوزات والصالات للاحتفاظ بها أو استرجاعها على جوالك بسهولة:</p>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="exportData()" class="p-3 bg-ice-50 hover:bg-ice-100 border border-ice-200 rounded-2xl font-bold text-ice-800 text-center space-y-1">
+                        <i class="fa-solid fa-download text-lg text-ice-600 block"></i>
+                        <span>تصدير البيانات (JSON)</span>
+                    </button>
+                    
+                    <label class="p-3 bg-ice-50 hover:bg-ice-100 border border-ice-200 rounded-2xl font-bold text-ice-800 text-center space-y-1 cursor-pointer block">
+                        <i class="fa-solid fa-upload text-lg text-ice-600 block"></i>
+                        <span>استرجاع البيانات</span>
+                        <input type="file" id="importFileInput" onchange="importData(event)" accept=".json" class="hidden">
+                    </label>
+                </div>
+
+                <div class="pt-3 border-t border-slate-100">
+                    <button onclick="resetToSampleData()" class="w-full py-2 bg-rose-50 text-rose-600 hover:bg-rose-100 font-bold rounded-xl text-xs transition">
+                        <i class="fa-solid fa-rotate-left"></i> استعادة البيانات الافتراضية
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT ENGINE -->
+    <script>
+        // Storage keys & Initial App State
+        const STORAGE_KEY = 'heavens_hall_app_data_v1';
+
+        // Default Initial Data
+        const defaultData = {
+            halls: [
+                { id: 'hall-1', name: 'الصالة الأولى - النعيم', capacity: 450, price: 6500, features: 'إضاءة ليزر متحركة، كوشة ملكية، مكبرات صوت، جناح للعروس', status: 'متاحة' },
+                { id: 'hall-2', name: 'الصالة الثانية - الفردوس', capacity: 300, price: 4500, features: 'شاشات عرض سينمائية، طاولات مضاءة، ضيافة ممتازة', status: 'متاحة' },
+                { id: 'hall-3', name: 'الصالة اللؤلؤية - الضيافة', capacity: 150, price: 2500, features: 'مخصصة للحفلات والمؤتمرات الصغيرة، أجهزة عرض متطورة', status: 'متاحة' }
+            ],
+            bookings: [
+                {
+                    id: 'BK-1001',
+                    clientName: 'عبدالله محمد الشمري',
+                    clientPhone: '0501234567',
+                    hallId: 'hall-1',
+                    eventType: 'حفل زفاف كامل',
+                    date: new Date().toISOString().split('T')[0],
+                    timeFrom: '16:00',
+                    timeTo: '23:30',
+                    totalPrice: 6500,
+                    depositPaid: 3000,
+                    status: 'مؤكد',
+                    notes: 'طلب كوشة ذهبية ورقم طاولات إضافي',
+                    payments: [
+                        { amount: 3000, date: new Date().toISOString().split('T')[0], method: 'نقداً (Cash)' }
+                    ]
+                },
+                {
+                    id: 'BK-1002',
+                    clientName: 'سارة خالد العتيبي',
+                    clientPhone: '0559876543',
+                    hallId: 'hall-2',
+                    eventType: 'حفل خطوبة / ملكة',
+                    date: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
+                    timeFrom: '17:00',
+                    timeTo: '22:00',
+                    totalPrice: 4500,
+                    depositPaid: 1500,
+                    status: 'بانتظار العربون',
+                    notes: 'بانتظار تأكيد التحويل البنكي',
+                    payments: []
+                }
+            ]
+        };
+
+        let appData = { halls: [], bookings: [] };
+        let isPublicView = false;
+
+        // Load data on start
+        window.onload = function() {
+            loadAppData();
+            renderAllViews();
+            
+            // Set today's date in filter input
+            document.getElementById('scheduleDateFilter').value = new Date().toISOString().split('T')[0];
+        };
+
+        function loadAppData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    appData = JSON.parse(saved);
+                } catch(e) {
+                    appData = defaultData;
+                }
+            } else {
+                appData = defaultData;
+                saveAppData();
+            }
+        }
+
+        function saveAppData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+            renderAllViews();
+        }
+
+        // View Rendering Engine
+        function renderAllViews() {
+            renderDashboard();
+            renderScheduleTable();
+            renderBookingsTable();
+            renderFinancials();
+            renderHalls();
+            renderPublicPortal();
+            populateHallDropdowns();
+        }
+
+        // Tab Navigation Switcher
+        function switchTab(tabId) {
+            const sections = ['dashboard', 'schedule', 'bookings', 'financials', 'halls'];
+            sections.forEach(sec => {
+                document.getElementById(`sec-${sec}`).classList.add('hidden');
+                
+                // Desktop tabs style
+                const tabBtn = document.getElementById(`tab-${sec}`);
+                if (tabBtn) {
+                    tabBtn.classList.remove('border-gold-400', 'text-gold-400');
+                    tabBtn.classList.add('border-transparent');
+                }
+
+                // Mobile tabs style
+                const mtabBtn = document.getElementById(`mtab-${sec}`);
+                if (mtabBtn) {
+                    mtabBtn.classList.remove('text-gold-400');
+                }
+            });
+
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+            
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if (activeTab) {
+                activeTab.classList.add('border-gold-400', 'text-gold-400');
+            }
+
+            const activeMTab = document.getElementById(`mtab-${tabId}`);
+            if (activeMTab) {
+                activeMTab.classList.add('text-gold-400');
+            }
+        }
+
+        // View Mode Switcher (Admin / Visitor)
+        function toggleViewMode() {
+            isPublicView = !isPublicView;
+            const adminContainer = document.getElementById('adminContainer');
+            const publicContainer = document.getElementById('publicContainer');
+            const toggleBtnText = document.getElementById('viewToggleText');
+
+            if (isPublicView) {
+                adminContainer.classList.add('hidden');
+                publicContainer.classList.remove('hidden');
+                toggleBtnText.textContent = 'رجوع للإدارة';
+            } else {
+                adminContainer.classList.remove('hidden');
+                publicContainer.classList.add('hidden');
+                toggleBtnText.textContent = 'عرض للزوار';
+            }
+        }
+
+        // Helper: Get Hall Name by ID
+        function getHallName(id) {
+            const h = appData.halls.find(x => x.id === id);
+            return h ? h.name : 'صالة غير محددة';
+        }
+
+        // 1. DASHBOARD LOGIC
+        function renderDashboard() {
+            document.getElementById('dashTotalBookings').textContent = appData.bookings.length;
+            
+            let collected = 0;
+            let totalVal = 0;
+
+            appData.bookings.forEach(b => {
+                totalVal += Number(b.totalPrice || 0);
+                let bPaid = Number(b.depositPaid || 0);
+                if (b.payments) {
+                    b.payments.forEach(p => bPaid += Number(p.amount || 0));
+                }
+                collected += bPaid;
+            });
+
+            const remaining = Math.max(0, totalVal - collected);
+            document.getElementById('dashCollectedAmount').innerHTML = `${collected.toLocaleString()} <span class="text-xs">د.إ</span>`;
+            document.getElementById('dashRemainingAmount').innerHTML = `${remaining.toLocaleString()} <span class="text-xs">د.إ</span>`;
+            
+            const activeHalls = appData.halls.filter(h => h.status === 'متاحة').length;
+            document.getElementById('dashActiveHalls').textContent = activeHalls;
+
+            // Recent Bookings Table
+            const recentBody = document.getElementById('dashRecentBookingsBody');
+            recentBody.innerHTML = '';
+            
+            const sorted = [...appData.bookings].reverse().slice(0, 5);
+            if (sorted.length === 0) {
+                recentBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">لا توجد حجوزات مسجلة حتى الآن</td></tr>`;
+            } else {
+                sorted.forEach(b => {
+                    const statusColor = getStatusBadge(b.status);
+                    recentBody.innerHTML += `
+                        <tr class="hover:bg-ice-50/50">
+                            <td class="p-2.5 font-bold text-navy-900">${b.clientName}</td>
+                            <td class="p-2.5 text-slate-600">${getHallName(b.hallId)}</td>
+                            <td class="p-2.5 text-slate-600">${b.date} <span class="text-[10px] text-slate-400">(${b.timeFrom})</span></td>
+                            <td class="p-2.5">${statusColor}</td>
+                            <td class="p-2.5 text-center">
+                                <button onclick="openVoucherModal('${b.id}')" class="bg-gold-500/10 text-gold-600 hover:bg-gold-500/20 px-2 py-1 rounded-lg text-xs font-bold transition">
+                                    <i class="fa-solid fa-receipt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // Hall Readiness Summary
+            const hallsList = document.getElementById('dashHallsList');
+            hallsList.innerHTML = '';
+            appData.halls.forEach(h => {
+                const countBooked = appData.bookings.filter(b => b.hallId === h.id).length;
+                hallsList.innerHTML += `
+                    <div class="p-3 rounded-xl border border-slate-100 bg-ice-50/30 flex items-center justify-between">
+                        <div>
+                            <p class="font-bold text-xs text-navy-900">${h.name}</p>
+                            <p class="text-[10px] text-slate-500">السعة: ${h.capacity} شخص | ${h.price} د.إ</p>
+                        </div>
+                        <span class="text-xs px-2.5 py-1 rounded-full font-bold ${h.status === 'متاحة' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
+                            ${h.status} (${countBooked} حجز)
+                        </span>
+                    </div>
+                `;
+            });
+        }
+
+        function getStatusBadge(status) {
+            switch(status) {
+                case 'مؤكد':
+                    return `<span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px] font-extrabold">مؤكد</span>`;
+                case 'بانتظار العربون':
+                    return `<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-[10px] font-extrabold">بانتظار العربون</span>`;
+                case 'مكتمل':
+                    return `<span class="bg-ice-200 text-ice-800 px-2 py-0.5 rounded-full text-[10px] font-extrabold">مكتمل</span>`;
+                default:
+                    return `<span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full text-[10px] font-extrabold">ملغي</span>`;
+            }
+        }
+
+        // 2. SCHEDULE & CALENDAR GRID LOGIC
+        function renderScheduleTable() {
+            const filterHall = document.getElementById('scheduleHallFilter').value;
+            const filterDate = document.getElementById('scheduleDateFilter').value;
+            const grid = document.getElementById('scheduleGrid');
+            grid.innerHTML = '';
+
+            let filteredBookings = appData.bookings;
+            if (filterHall !== 'all') {
+                filteredBookings = filteredBookings.filter(b => b.hallId === filterHall);
+            }
+            if (filterDate) {
+                filteredBookings = filteredBookings.filter(b => b.date === filterDate);
+            }
+
+            if (filteredBookings.length === 0) {
+                grid.innerHTML = `
+                    <div class="text-center py-10 text-slate-400">
+                        <i class="fa-solid fa-calendar-xmark text-4xl mb-2 text-ice-300"></i>
+                        <p class="text-sm font-bold">لا توجد حجوزات تطابق خيارات التصفية السابقة</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <table class="w-full text-right text-xs">
+                    <thead>
+                        <tr class="bg-navy-900 text-white">
+                            <th class="p-3 rounded-r-xl">الصالة</th>
+                            <th class="p-3">اسم العميل</th>
+                            <th class="p-3">التاريخ</th>
+                            <th class="p-3">من - إلى</th>
+                            <th class="p-3">نوع المناسبة</th>
+                            <th class="p-3 rounded-l-xl">الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+            `;
+
+            filteredBookings.forEach(b => {
+                html += `
+                    <tr class="hover:bg-ice-50/60 transition">
+                        <td class="p-3 font-bold text-ice-700">${getHallName(b.hallId)}</td>
+                        <td class="p-3 font-bold text-navy-900">${b.clientName}</td>
+                        <td class="p-3 text-slate-600">${b.date}</td>
+                        <td class="p-3 text-slate-600">${b.timeFrom} - ${b.timeTo}</td>
+                        <td class="p-3 text-slate-600">${b.eventType}</td>
+                        <td class="p-3">${getStatusBadge(b.status)}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            grid.innerHTML = html;
+        }
+
+        function resetScheduleFilters() {
+            document.getElementById('scheduleHallFilter').value = 'all';
+            document.getElementById('scheduleDateFilter').value = '';
+            renderScheduleTable();
+        }
+
+        // 3. BOOKINGS MANAGEMENT
+        function renderBookingsTable() {
+            const search = document.getElementById('bookingSearchInput').value.toLowerCase();
+            const tbody = document.getElementById('bookingsTableBody');
+            tbody.innerHTML = '';
+
+            const list = appData.bookings.filter(b => 
+                b.clientName.toLowerCase().includes(search) || 
+                b.clientPhone.includes(search)
+            );
+
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400">لا توجد حوافظ حجوزات مطابقة</td></tr>`;
+                return;
+            }
+
+            list.forEach(b => {
+                let paid = Number(b.depositPaid || 0);
+                if (b.payments) b.payments.forEach(p => paid += Number(p.amount || 0));
+                
+                tbody.innerHTML += `
+                    <tr class="hover:bg-ice-50/50">
+                        <td class="p-3 font-mono text-xs font-bold text-slate-500">${b.id}</td>
+                        <td class="p-3 font-bold text-navy-900">${b.clientName}</td>
+                        <td class="p-3 text-slate-600">${b.clientPhone}</td>
+                        <td class="p-3 text-slate-600">${getHallName(b.hallId)}</td>
+                        <td class="p-3 text-slate-600">${b.date}<br><span class="text-[10px] text-slate-400">${b.timeFrom} - ${b.timeTo}</span></td>
+                        <td class="p-3">
+                            <span class="font-bold text-navy-900">${b.totalPrice}</span> / 
+                            <span class="text-emerald-600 font-bold">${paid}</span> د.إ
+                        </td>
+                        <td class="p-3">${getStatusBadge(b.status)}</td>
+                        <td class="p-3 text-center">
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button onclick="openVoucherModal('${b.id}')" title="طباعة سند" class="bg-gold-500 text-navy-900 hover:bg-gold-600 p-1.5 rounded-lg text-xs font-bold shadow">
+                                    <i class="fa-solid fa-print"></i>
+                                </button>
+                                <button onclick="openPaymentModal('${b.id}')" title="تحصيل دفعة" class="bg-emerald-600 text-white hover:bg-emerald-700 p-1.5 rounded-lg text-xs font-bold shadow">
+                                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                                </button>
+                                <button onclick="editBooking('${b.id}')" title="تعديل" class="bg-ice-600 text-white hover:bg-ice-700 p-1.5 rounded-lg text-xs font-bold shadow">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button onclick="deleteBooking('${b.id}')" title="حذف" class="bg-rose-500 text-white hover:bg-rose-600 p-1.5 rounded-lg text-xs font-bold shadow">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // 4. FINANCIALS LOGIC
+        function renderFinancials() {
+            let grandTotal = 0;
+            let collectedTotal = 0;
+
+            const pendingBody = document.getElementById('financialPendingBody');
+            pendingBody.innerHTML = '';
+
+            let pendingCount = 0;
+
+            appData.bookings.forEach(b => {
+                const total = Number(b.totalPrice || 0);
+                let paid = Number(b.depositPaid || 0);
+                if (b.payments) b.payments.forEach(p => paid += Number(p.amount || 0));
+
+                grandTotal += total;
+                collectedTotal += paid;
+
+                const remaining = Math.max(0, total - paid);
+                if (remaining > 0 && b.status !== 'ملغي') {
+                    pendingCount++;
+                    pendingBody.innerHTML += `
+                        <tr class="hover:bg-amber-50/50">
+                            <td class="p-2.5 font-bold text-slate-700">${b.id}</td>
+                            <td class="p-2.5 font-bold text-navy-900">${b.clientName}</td>
+                            <td class="p-2.5 font-bold text-slate-800">${total} د.إ</td>
+                            <td class="p-2.5 text-emerald-600 font-bold">${paid} د.إ</td>
+                            <td class="p-2.5 text-amber-700 font-extrabold">${remaining} د.إ</td>
+                            <td class="p-2.5 text-center">
+                                <button onclick="openPaymentModal('${b.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-xl text-xs font-bold shadow">
+                                    + تسجيل دفعة
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
+
+            if (pendingCount === 0) {
+                pendingBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">جميع العقود الحالية مسددة بالكامل!</td></tr>`;
+            }
+
+            document.getElementById('finCollectedTotal').textContent = `${collectedTotal.toLocaleString()} د.إ`;
+            document.getElementById('finPendingTotal').textContent = `${Math.max(0, grandTotal - collectedTotal).toLocaleString()} د.إ`;
+            document.getElementById('finGrandTotal').textContent = `${grandTotal.toLocaleString()} د.إ`;
+        }
+
+        // 5. HALLS MANAGEMENT LOGIC
+        function renderHalls() {
+            const container = document.getElementById('hallsGridContainer');
+            container.innerHTML = '';
+
+            appData.halls.forEach(h => {
+                container.innerHTML += `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-ice-200 space-y-4 relative overflow-hidden">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-extrabold text-lg text-navy-900">${h.name}</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">السعة الاستيعابية: <strong class="text-slate-700">${h.capacity} شخص</strong></p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold ${h.status === 'متاحة' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                                ${h.status}
+                            </span>
+                        </div>
+
+                        <div class="bg-ice-50 p-3 rounded-xl border border-ice-100">
+                            <p class="text-xs text-slate-500">سعر الحجز المبدئي:</p>
+                            <p class="text-xl font-black text-ice-700 mt-0.5">${h.price} <span class="text-xs font-normal">د.إ / المناسبة</span></p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-bold text-slate-700 mb-1">التجهيزات والمميزات:</p>
+                            <p class="text-xs text-slate-600 leading-relaxed">${h.features || 'لا توجد مميزات مضافة'}</p>
+                        </div>
+
+                        <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                            <button onclick="editHall('${h.id}')" class="bg-ice-100 hover:bg-ice-200 text-ice-800 px-3 py-1.5 rounded-xl text-xs font-bold transition">
+                                <i class="fa-solid fa-pen"></i> تعديل
+                            </button>
+                            <button onclick="deleteHall('${h.id}')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl text-xs font-bold transition">
+                                <i class="fa-solid fa-trash"></i> حذف
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Populate Dropdowns
+        function populateHallDropdowns() {
+            const selects = ['bookHallId', 'scheduleHallFilter', 'pubHallSelect'];
+            selects.forEach(sId => {
+                const el = document.getElementById(sId);
+                if (!el) return;
+                
+                const currVal = el.value;
+                if (sId === 'scheduleHallFilter') {
+                    el.innerHTML = '<option value="all">كل الصالات</option>';
+                } else {
+                    el.innerHTML = '';
+                }
+
+                appData.halls.forEach(h => {
+                    el.innerHTML += `<option value="${h.id}">${h.name} (${h.price} د.إ)</option>`;
+                });
+
+                if (currVal) el.value = currVal;
+            });
+        }
+
+        // 6. PUBLIC PORTAL LOGIC
+        function renderPublicPortal() {
+            const grid = document.getElementById('publicHallsGrid');
+            grid.innerHTML = '';
+
+            appData.halls.forEach(h => {
+                grid.innerHTML += `
+                    <div class="bg-white rounded-3xl shadow-lg overflow-hidden border border-ice-100 flex flex-col justify-between">
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-extrabold text-xl text-navy-900">${h.name}</h4>
+                                <span class="bg-gold-100 text-gold-700 text-xs font-extrabold px-3 py-1 rounded-full"><i class="fa-solid fa-users ml-1"></i> ${h.capacity} شخص</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">${h.features}</p>
+                            <div class="pt-3 border-t border-slate-100">
+                                <span class="text-xs text-slate-400 block">تكلفة الحجز تبدأ من</span>
+                                <span class="text-2xl font-black text-emerald-600">${h.price} د.إ</span>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-ice-50/80 border-t border-ice-100 text-center">
+                            <a href="#publicBookingForm" onclick="selectHallInPublicForm('${h.id}')" class="inline-block w-full bg-navy-800 hover:bg-navy-900 text-white font-bold py-2 rounded-xl text-xs transition">
+                                اختيار هذه الصالة للحجز
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function selectHallInPublicForm(hallId) {
+            document.getElementById('pubHallSelect').value = hallId;
+        }
+
+        function handlePublicBooking(e) {
+            e.preventDefault();
+            const newBooking = {
+                id: 'BK-' + Math.floor(1000 + Math.random() * 9000),
+                clientName: document.getElementById('pubClientName').value,
+                clientPhone: document.getElementById('pubClientPhone').value,
+                hallId: document.getElementById('pubHallSelect').value,
+                eventType: document.getElementById('pubEventType').value,
+                date: document.getElementById('pubDate').value,
+                timeFrom: document.getElementById('pubTimeFrom').value,
+                timeTo: document.getElementById('pubTimeTo').value,
+                totalPrice: 5000,
+                depositPaid: 0,
+                status: 'بانتظار العربون',
+                notes: document.getElementById('pubNotes').value,
+                payments: []
+            };
+
+            appData.bookings.push(newBooking);
+            saveAppData();
+            
+            alert('تم إرسال طلب الحجز بنجاح! سوف يتواصل معك فريق إدارة صالة جنات لتأكيد الحجز.');
+            document.getElementById('publicForm').reset();
+            toggleViewMode();
+            switchTab('bookings');
+        }
+
+        // BOOKING MODAL ACTIONS
+        function openBookingModal(editId = null) {
+            document.getElementById('bookingForm').reset();
+            document.getElementById('bookingEditId').value = '';
+            document.getElementById('bookingModalTitle').textContent = 'تسجيل حجز جديد';
+
+            if (editId) {
+                const b = appData.bookings.find(x => x.id === editId);
+                if (b) {
+                    document.getElementById('bookingModalTitle').textContent = 'تعديل بيانات الحجز';
+                    document.getElementById('bookingEditId').value = b.id;
+                    document.getElementById('bookClientName').value = b.clientName;
+                    document.getElementById('bookClientPhone').value = b.clientPhone;
+                    document.getElementById('bookHallId').value = b.hallId;
+                    document.getElementById('bookEventType').value = b.eventType;
+                    document.getElementById('bookDate').value = b.date;
+                    document.getElementById('bookTimeFrom').value = b.timeFrom;
+                    document.getElementById('bookTimeTo').value = b.timeTo;
+                    document.getElementById('bookTotalPrice').value = b.totalPrice;
+                    document.getElementById('bookDeposit').value = b.depositPaid;
+                    document.getElementById('bookStatus').value = b.status;
+                    document.getElementById('bookNotes').value = b.notes || '';
+                    calcRemaining();
+                }
+            } else {
+                calcBookingPrice();
+            }
+
+            document.getElementById('bookingModal').classList.remove('hidden');
+        }
+
+        function calcBookingPrice() {
+            const hId = document.getElementById('bookHallId').value;
+            const h = appData.halls.find(x => x.id === hId);
+            if (h) {
+                document.getElementById('bookTotalPrice').value = h.price;
+                calcRemaining();
+            }
+        }
+
+        function calcRemaining() {
+            const total = Number(document.getElementById('bookTotalPrice').value || 0);
+            const deposit = Number(document.getElementById('bookDeposit').value || 0);
+            document.getElementById('bookRemaining').value = Math.max(0, total - deposit);
+        }
+
+        function saveBooking(e) {
+            e.preventDefault();
+            const editId = document.getElementById('bookingEditId').value;
+            
+            const bookingData = {
+                id: editId || ('BK-' + Math.floor(1000 + Math.random() * 9000)),
+                clientName: document.getElementById('bookClientName').value,
+                clientPhone: document.getElementById('bookClientPhone').value,
+                hallId: document.getElementById('bookHallId').value,
+                eventType: document.getElementById('bookEventType').value,
+                date: document.getElementById('bookDate').value,
+                timeFrom: document.getElementById('bookTimeFrom').value,
+                timeTo: document.getElementById('bookTimeTo').value,
+                totalPrice: Number(document.getElementById('bookTotalPrice').value),
+                depositPaid: Number(document.getElementById('bookDeposit').value),
+                status: document.getElementById('bookStatus').value,
+                notes: document.getElementById('bookNotes').value,
+                payments: editId ? (appData.bookings.find(x => x.id === editId)?.payments || []) : []
+            };
+
+            if (editId) {
+                const idx = appData.bookings.findIndex(x => x.id === editId);
+                if (idx !== -1) appData.bookings[idx] = bookingData;
+            } else {
+                appData.bookings.push(bookingData);
+            }
+
+            saveAppData();
+            closeModal('bookingModal');
+        }
+
+        function editBooking(id) {
+            openBookingModal(id);
+        }
+
+        function deleteBooking(id) {
+            if (confirm('هل أنت أخيرًا متأكد من حذف هذا الحجز؟')) {
+                appData.bookings = appData.bookings.filter(x => x.id !== id);
+                saveAppData();
+            }
+        }
+
+        // PAYMENT MODAL ACTIONS
+        function openPaymentModal(bookingId) {
+            const b = appData.bookings.find(x => x.id === bookingId);
+            if (!b) return;
+
+            let paid = Number(b.depositPaid || 0);
+            if (b.payments) b.payments.forEach(p => paid += Number(p.amount || 0));
+            const remaining = Math.max(0, Number(b.totalPrice || 0) - paid);
+
+            document.getElementById('payBookingId').value = b.id;
+            document.getElementById('payClientName').textContent = b.clientName;
+            document.getElementById('payCurrentRemaining').textContent = `${remaining} د.إ`;
+            document.getElementById('payAmount').value = remaining;
+
+            document.getElementById('paymentModal').classList.remove('hidden');
+        }
+
+        function savePayment(e) {
+            e.preventDefault();
+            const bId = document.getElementById('payBookingId').value;
+            const amount = Number(document.getElementById('payAmount').value);
+            const method = document.getElementById('payMethod').value;
+
+            const b = appData.bookings.find(x => x.id === bId);
+            if (b) {
+                if (!b.payments) b.payments = [];
+                b.payments.push({
+                    amount: amount,
+                    date: new Date().toISOString().split('T')[0],
+                    method: method
+                });
+
+                // Update status if fully paid
+                let totalPaid = Number(b.depositPaid || 0);
+                b.payments.forEach(p => totalPaid += Number(p.amount || 0));
+                if (totalPaid >= Number(b.totalPrice || 0)) {
+                    b.status = 'مكتمل';
+                }
+
+                saveAppData();
+            }
+            closeModal('paymentModal');
+        }
+
+        // HALL MODAL ACTIONS
+        function openHallModal(editId = null) {
+            document.getElementById('hallForm').reset();
+            document.getElementById('hallEditId').value = '';
+            document.getElementById('hallModalTitle').textContent = 'إضافة صالة جديدة';
+
+            if (editId) {
+                const h = appData.halls.find(x => x.id === editId);
+                if (h) {
+                    document.getElementById('hallModalTitle').textContent = 'تعديل بيانات الصالة';
+                    document.getElementById('hallEditId').value = h.id;
+                    document.getElementById('hallName').value = h.name;
+                    document.getElementById('hallCapacity').value = h.capacity;
+                    document.getElementById('hallPrice').value = h.price;
+                    document.getElementById('hallFeatures').value = h.features || '';
+                    document.getElementById('hallStatus').value = h.status;
+                }
+            }
+
+            document.getElementById('hallModal').classList.remove('hidden');
+        }
+
+        function saveHall(e) {
+            e.preventDefault();
+            const editId = document.getElementById('hallEditId').value;
+            
+            const hallData = {
+                id: editId || ('hall-' + Date.now()),
+                name: document.getElementById('hallName').value,
+                capacity: Number(document.getElementById('hallCapacity').value),
+                price: Number(document.getElementById('hallPrice').value),
+                features: document.getElementById('hallFeatures').value,
+                status: document.getElementById('hallStatus').value
+            };
+
+            if (editId) {
+                const idx = appData.halls.findIndex(x => x.id === editId);
+                if (idx !== -1) appData.halls[idx] = hallData;
+            } else {
+                appData.halls.push(hallData);
+            }
+
+            saveAppData();
+            closeModal('hallModal');
+        }
+
+        function editHall(id) {
+            openHallModal(id);
+        }
+
+        function deleteHall(id) {
+            if (appData.halls.length <= 1) {
+                alert('يجب أن تظل هناك صالة واحدة على الأقل في النظام.');
+                return;
+            }
+            if (confirm('هل أنت متأكد من حذف هذه الصالة؟')) {
+                appData.halls = appData.halls.filter(x => x.id !== id);
+                saveAppData();
+            }
+        }
+
+        // PRINTABLE VOUCHER / RECEIPT GENERATOR
+        function openVoucherModal(bookingId) {
+            const b = appData.bookings.find(x => x.id === bookingId);
+            if (!b) return;
+
+            let paid = Number(b.depositPaid || 0);
+            if (b.payments) b.payments.forEach(p => paid += Number(p.amount || 0));
+            const remaining = Math.max(0, Number(b.totalPrice || 0) - paid);
+
+            document.getElementById('vNum').textContent = b.id;
+            document.getElementById('vIssueDate').textContent = new Date().toLocaleDateString('ar-SA');
+            document.getElementById('vClientName').textContent = b.clientName;
+            document.getElementById('vClientPhone').textContent = b.clientPhone;
+            document.getElementById('vHallName').textContent = getHallName(b.hallId);
+            document.getElementById('vEventDate').textContent = `${b.date} (${b.timeFrom} - ${b.timeTo})`;
+            
+            document.getElementById('vTotal').textContent = `${b.totalPrice} د.إ`;
+            document.getElementById('vPaid').textContent = `${paid} د.إ`;
+            document.getElementById('vRemaining').textContent = `${remaining} د.إ`;
+
+            document.getElementById('voucherModal').classList.remove('hidden');
+        }
+
+        // BACKUP & RESTORE MODAL
+        function openBackupModal() {
+            document.getElementById('backupModal').classList.remove('hidden');
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `heavens_hall_backup_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+        }
+
+        function importData(event) {
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.halls && imported.bookings) {
+                        appData = imported;
+                        saveAppData();
+                        alert('تم استرجاع البيانات بنجاح!');
+                        closeModal('backupModal');
+                    } else {
+                        alert('ملف البيانات غير صالح.');
+                    }
+                } catch(err) {
+                    alert('خطأ أثناء قراءة ملف النسخة الاحتياطية.');
+                }
+            };
+            fileReader.readAsText(event.target.files[0]);
+        }
+
+        function resetToSampleData() {
+            if (confirm('هل أنت متأكد من إعادة ضبط البيانات للوضع الافتراضي؟')) {
+                appData = defaultData;
+                saveAppData();
+                closeModal('backupModal');
+            }
+        }
+
+        // Close Modal Utility
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
